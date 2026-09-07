@@ -13,6 +13,12 @@ export const config = {
   dbPath: process.env.DB_PATH && process.env.DB_PATH.trim() !== '' ? process.env.DB_PATH : defaultDbPath,
   serverRoot,
 
+  // CORS allowed origins (P3/P4 SPAs run on separate dev-server origins).
+  // Comma-separated list, or '*' to reflect any origin (default for local dev).
+  corsOrigins: (process.env.CORS_ORIGINS && process.env.CORS_ORIGINS.trim() !== ''
+    ? process.env.CORS_ORIGINS.split(',').map((s) => s.trim()).filter(Boolean)
+    : ['*']),
+
   // --- Auth (P1) ---
   // JWT signing secret. A dev fallback is used when unset; MUST be set in real deployments.
   jwtSecret: process.env.JWT_SECRET && process.env.JWT_SECRET.trim() !== ''

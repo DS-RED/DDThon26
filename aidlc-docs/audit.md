@@ -89,3 +89,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "지금 P1 파트 담당이 늦게 오고있어서 일단 작업을 진행해야 할 것 같은데 임시로 P1 작업 진행해줘. 타이밍 상 아무 작업 안되었을 시점이라 지금 이쪽해서 해도 문제 없을꺼야." / (mid-turn) "검증 후 커밋, 푸시까지 진행해줘"
 **AI Response**: P1 담당자 합류 지연으로 P2가 임시로 P1 슬라이스(unit p1-backend-orders-sessions) 구현. 범위: 인증(JWT jsonwebtoken + bcryptjs, 관리자/테이블 로그인, 로그인 시도 제한), 실제 requireAdmin/requireTable 미들웨어(P2 placeholder 대체), 세션 라이프사이클(자동 시작~종료→order_history 이동), 주문 CRUD(가격 스냅샷·총액·상태변경·직권삭제), 주문 이력 조회, 테이블 초기설정·대시보드 요약, SSE 발행(order.created/updated/deleted, session.closed)+/events 구독. seed.js를 실제 bcrypt 해시로 갱신(admin admin1234, table 0000, 테이블 3개). menu.test.js를 관리자 토큰 인증으로 갱신. auth/orders/sse 테스트 추가. Node 24.19.0 설치 후 npm test 35/35 통과, 로컬 end-to-end 스모크(로그인→주문→SSE 실시간 수신→세션종료→이력) 통과. 계약 문서(api-auth-orders-sessions.md) 및 shared-conventions/README 갱신. 커밋·푸시 진행. 임시 구현이며 P1 담당자 합류 후 리뷰/이관 대상임을 문서에 명시.
 **Context**: CONSTRUCTION - Code Generation (unit = p1-backend-orders-sessions, TEMP)
+
+## Construction - P2 CORS Enablement
+**Timestamp**: 2026-09-07T05:20:00Z
+**User Input**: "다시 P2로 돌아가서 뭐 진행하면 좋을지 정리해줘" → (AskUserQuestion 응답) "CORS 활성화 (1순위)"
+**AI Response**: P2 남은 작업 정리 후 사용자가 CORS 활성화 선택. cors 미들웨어 추가(app.js), config.corsOrigins(CORS_ORIGINS env, 기본 '*'), .env.example/README 문서화, store.test.js에 CORS 단순요청+프리플라이트 테스트 추가. SSE 응답 헤더와 충돌 없음 확인. npm test 36/36 통과. 커밋·푸시.
+**Context**: CONSTRUCTION - P2 common infra 보강 (CORS)

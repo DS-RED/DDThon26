@@ -46,6 +46,7 @@ npm test             # in-memory SQLite 로 실행 (DB_PATH=:memory:)
 | JWT_EXPIRES_IN | 16h | 토큰 만료(FR-A1) |
 | BCRYPT_ROUNDS | 10 | bcrypt 코스트 |
 | LOGIN_MAX_ATTEMPTS / LOGIN_WINDOW_MS | 5 / 900000 | 로그인 시도 제한 |
+| CORS_ORIGINS | `*` (모든 origin) | P3/P4 SPA용 허용 origin(쉼표 구분). 예: `http://localhost:5173,http://localhost:5174` |
 
 ## 디렉터리
 ```

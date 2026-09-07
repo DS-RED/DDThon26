@@ -1,4 +1,6 @@
 import express from 'express';
+import cors from 'cors';
+import { config } from './config/index.js';
 import { requestLogger } from './middleware/logger.js';
 import { notFoundHandler, errorHandler } from './middleware/error-handler.js';
 import storeRoutes from './store/store.routes.js';
@@ -13,6 +15,17 @@ import tablesRoutes from './tables/tables.routes.js';
  */
 export function createApp() {
   const app = express();
+
+  // CORS: P3/P4 SPAs call the API from separate dev-server origins.
+  // '*' (default, local dev) reflects any origin; otherwise restrict to the list.
+  const allowAny = config.corsOrigins.includes('*');
+  app.use(
+    cors({
+      origin: allowAny ? true : config.corsOrigins,
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
+  );
 
   app.use(express.json());
   app.use(requestLogger);

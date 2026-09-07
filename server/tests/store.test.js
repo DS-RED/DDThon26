@@ -23,6 +23,23 @@ describe('store routes', () => {
     assert.equal(res.body.status, 'ok');
   });
 
+  test('CORS: allows cross-origin requests and preflight', async () => {
+    // Simple request reflects the origin
+    const res = await request(app).get('/health').set('Origin', 'http://localhost:5173');
+    assert.equal(res.status, 200);
+    assert.equal(res.headers['access-control-allow-origin'], 'http://localhost:5173');
+
+    // Preflight for an authenticated mutation
+    const pre = await request(app)
+      .options('/api/stores/1/menu')
+      .set('Origin', 'http://localhost:5173')
+      .set('Access-Control-Request-Method', 'POST')
+      .set('Access-Control-Request-Headers', 'authorization,content-type');
+    assert.ok([200, 204].includes(pre.status));
+    assert.equal(pre.headers['access-control-allow-origin'], 'http://localhost:5173');
+    assert.match(pre.headers['access-control-allow-headers'] || '', /authorization/i);
+  });
+
   test('GET /api/stores lists seeded store', async () => {
     const res = await request(app).get('/api/stores');
     assert.equal(res.status, 200);
