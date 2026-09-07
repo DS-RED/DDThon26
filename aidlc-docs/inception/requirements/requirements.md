@@ -1,6 +1,6 @@
 # 테이블오더 서비스 — 요구사항 정의서 (Requirements)
 
-> **문서 상태**: Requirements Analysis 단계 산출물 (사용자 승인 대기)
+> **문서 상태**: APPROVED — 2026-09-07 사용자 승인 (audit.md의 Requirements Analysis - Approval & Role Assignment 참조). 2026-09-07 P3 착수 시 표기 정정, 요구사항 본문 변경 없음.
 > **작성일**: 2026-09-07
 > **입력 문서**: `requirements/table-order-requirements.md`, `requirements/constraints.md`
 > **확인 질문/답변**: `aidlc-docs/inception/requirements/requirement-verification-questions.md`

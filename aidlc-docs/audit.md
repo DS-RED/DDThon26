@@ -101,3 +101,42 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "1번 진행 해. 커밋 푸시는 하지 말고"
 **AI Response**: GET /menu에 `?available=true` 쿼리 지원 추가. menu.service.listMenu(storeId,{availableOnly})가 is_available=false 메뉴 제외 + 빈 분류 그룹 숨김(고객 화면용). 관리자 화면은 파라미터 없이 전체 조회. controller에서 req.query.available 파싱. menu.test.js에 품절 메뉴 제외 테스트 추가 → npm test 37/37 통과. api-menu-store.md 계약 문서 갱신. 사용자 요청대로 커밋·푸시는 하지 않음.
 **Context**: CONSTRUCTION - P2 고객 메뉴 도메인 보강
+
+## P3 Review and Planning — Session Continuity
+**Timestamp**: 2026-09-07T05:28:53Z
+**Timestamp Note**: 이번 항목의 기록 시각. 이전 리뷰 요청/승인의 실제 수신 시각을 소급 추정하지 않음. 앞선 팀 로그는 원문 유지.
+**Previous User Input (raw)**: "AI-DLC 체계로 개발중이야, 나는 P3을 맡아서 진행하려는데 git 주소는 https://github.com/DS-RED/DDThon26/ 여기야 현재 상태를 리뷰해주고 aidlc 방법론대로 진행중인지 확인도 해줘"
+**Current User Input (raw)**: "구래 진행해"
+**Context**: 앞선 리뷰의 다음 작업인 P3 고객 앱 설계·구현 계획 작성 진행. 아직 작성되지 않았던 코드 생성 계획 자체의 사전 승인으로 기록하지 않음.
+**AI Response**: 최신 origin/master a7cf83a를 fetch하고 feat/p3-customer-app 브랜치를 생성. 시작 시 존재한 미추적 docs/contracts/p3-customer-app.md 및 p3-requests-to-p1-orders-auth.md는 수정하지 않고 보존. 현재 인증/주문/메뉴 계약과 원 요구사항을 확인해 실행 계획, P3 설계·인수 조건, 10단계 코드 생성 계획을 검토용 초안으로 작성. 공유 상태의 P2-only/코드 없음/프레임워크 미정 표기를 현재 팀 상태로 갱신하고 P3/P4 미구현과 전체 E2E 미실행을 구분. 요구사항 문서 표지를 기존 승인 기록과 일치시킴. 백엔드/프론트 앱 코드 변경 없음, 커밋·푸시 없음.
+**Decisions / Proposals**: 원 요구의 성공 화면 5초 적용. 기존 P3 제안의 품절 카드 표시 유지(전체 메뉴 API 사용), 10건 클라이언트 페이지네이션 제안, 실제 로그인 응답/주문 id 사용. 사용자 시나리오·단위·설계 산출물은 작은 범위에 맞춘 통합 문서 방식으로 제안하며 상세 규칙의 모든 개별 산출물이 완료됐다고 표기하지 않음.
+**Open Dependency**: 빈 /orders/mine 배열은 활성 세션 내 전체 주문 삭제와 이용 완료를 구분하지 못함. 현재 착석 세션 식별 계약은 P1 검토 대상. 요청 메시지를 외부로 발송하지 않음. 그 외 코드 생성 단계는 승인 후 독립 진행 가능하나 세션 전환 인수 조건은 해결 전 미완료.
+**Extensions**: aidlc-state.md의 Security/Resiliency/Property-Based Testing opt-out 유지, opt-in 파일 확인, 비활성 확장 본문 로드/강제 생략. 원 요구사항의 기본 보안 요구는 유지.
+**Verification Scope**: 이번 변경은 문서만 포함. 78940fa에서 직접 실행한 36/36 백엔드 테스트는 앞선 리뷰 결과이며, a7cf83a의 37/37은 팀 audit의 보고값으로 구분. P3 앱 빌드/테스트는 코드 생성 후 실행 예정.
+
+## P3 Plan Review Prompt
+**Timestamp**: 2026-09-07T05:28:53Z
+**AI Prompt**: "P3 설계와 10단계 계획대로 구현을 시작할까요?"
+**Review Artifacts**: aidlc-docs/inception/plans/execution-plan.md; aidlc-docs/construction/p3-customer-app/design.md; aidlc-docs/construction/plans/p3-customer-app-code-generation-plan.md
+**Approval Basis**: .aidlc-rule-details/construction/code-generation.md, Part 1 Step 7: "Do not proceed until the user explicitly approves the unit code generation plan". 이번 사용자 지시는 계획 작성 진행으로 해석. 통합 설계 문서 방식과 구체적 구현 순서의 승인은 새 계획 검토 후 기록.
+**Status**: Awaiting user review; no approval response received for the new plan.
+
+## P3 Code Generation Approval
+**Timestamp**: 2026-09-07T05:31:37Z
+**User Input (raw)**: "그래"
+**Status**: Approved — P3 설계 및 10단계 코드 생성 계획. P1 계약 의존 단계는 해결 전 미완료 유지.
+**AI Response**: P3 고객 앱 구현과 검증 시작. P1/P2 서버 및 P4 앱은 수정하지 않음.
+
+## P3 Scope Confirmation
+**User Input (raw)**: "난 P3만 인데 맞지?"
+**AI Response**: P3 고객용 앱만 구현하며 P1/P2 백엔드와 P4 관리자 앱은 수정하지 않음을 확인. 관련 P3 AI-DLC 문서 갱신만 포함.
+
+## P3 Unit Scope and Publish Request
+**Timestamp**: 2026-09-07T05:56:36Z
+**Timestamp Note**: 후속 입력과 실행 결과의 기록 시각.
+**User Input (raw)**: "내 역할은 유닛별로쪼개진것 중에 p3 담당이야"
+**AI Response**: 분할된 작업 유닛 중 P3 고객 앱만 구현하며 다른 유닛 기능은 대신 구현하지 않음을 확인.
+**User Input (raw)**: "커밋하고 푸쉬해줘"
+**AI Response**: P3 기본 앱과 관련 문서만 선별하여 작업 브랜치에 커밋/푸시 진행. P1/P2/P4 소스 변경 없음. 기존 미추적 계약 문서 및 편집기 swap 파일은 제외.
+**Verification**: npm ci/build 및 Vitest 25/25 통과. Playwright 5개 시나리오는 libnspr4.so 누락으로 브라우저 시작에 실패해 미검증.
+**Open Work**: P1 세션 식별 계약과 카트 종료 초기화, 실제 브라우저/시각 검증. Step 8/9 및 전체 인수는 미완료로 유지.
