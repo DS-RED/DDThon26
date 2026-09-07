@@ -101,3 +101,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "1번 진행 해. 커밋 푸시는 하지 말고"
 **AI Response**: GET /menu에 `?available=true` 쿼리 지원 추가. menu.service.listMenu(storeId,{availableOnly})가 is_available=false 메뉴 제외 + 빈 분류 그룹 숨김(고객 화면용). 관리자 화면은 파라미터 없이 전체 조회. controller에서 req.query.available 파싱. menu.test.js에 품절 메뉴 제외 테스트 추가 → npm test 37/37 통과. api-menu-store.md 계약 문서 갱신. 사용자 요청대로 커밋·푸시는 하지 않음.
 **Context**: CONSTRUCTION - P2 고객 메뉴 도메인 보강
+
+## Construction - P2 api-menu-store.md 인증 문서 동기화
+**Timestamp**: 2026-09-07T05:48:00Z
+**User Input**: "2번도 진행해. 다른 P 모듈에 영향이 있을지 평가하고 푸시하고"
+**AI Response**: 문서 전용 변경(코드 무변경 → 기능적 영향 없음). api-menu-store.md 헤더의 stale 문구 "(현재 P2 placeholder 통과)"를 실제 P1 JWT 구현에 맞게 갱신: 토큰 발급 경로, requireAdmin 실검증, 401 조건, 공개 GET 명시. 검증 중 메뉴/분류 관리 컨트롤러가 토큰 storeId와 경로 storeId 일치를 검증하지 않는 교차 매장 권한 갭 발견 → 없는 403 동작을 문서화하지 않고 "알려진 갭"으로 정직하게 명시(주문 도메인은 assertStoreScope로 방지됨). 사용자에게 코드 보완 여부 확인 예정.
+**Context**: CONSTRUCTION - P2 문서 싱크 + 보안 갭 식별
