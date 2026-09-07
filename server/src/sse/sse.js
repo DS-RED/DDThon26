@@ -62,14 +62,18 @@ function startHeartbeat() {
 
 /**
  * Express handler for GET /api/stores/:storeId/events.
- * Admin-only. EventSource cannot set headers, so the JWT may be passed either as
- * `Authorization: Bearer` or as a `?token=` query param.
+ * Admin-only. The JWT MUST be sent in the `Authorization: Bearer` header.
+ *
+ * SECURITY: the token is intentionally NOT accepted as a `?token=` query param —
+ * query strings leak into access logs (see requestLogger), proxy logs and browser
+ * history. Clients subscribe via a fetch-based reader that sets the header rather
+ * than the native EventSource (which cannot set headers). See client-admin's
+ * useOrderStream.
  */
 export function eventsHandler(req, res) {
   const storeId = Number(req.params.storeId);
   const header = req.get('authorization') || '';
-  const bearer = header.startsWith('Bearer ') ? header.slice(7) : null;
-  const token = bearer || req.query.token;
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
 
   let payload;
   try {

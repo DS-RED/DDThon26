@@ -80,9 +80,9 @@
 ## 실시간 (SSE)
 | 메서드 | 경로 | 인증 | 설명 |
 |--------|------|------|------|
-| GET | `/api/stores/:storeId/events?token=<jwt>` | admin | `text/event-stream` 구독 |
+| GET | `/api/stores/:storeId/events` | admin | `text/event-stream` 구독. **인증: `Authorization: Bearer <jwt>` 헤더** |
 
-- EventSource는 헤더 설정이 어려워 **`?token=` 쿼리** 또는 `Authorization: Bearer` 허용.
+- **인증은 헤더로만.** JWT를 `?token=` 쿼리로 넘기지 않는다(쿼리는 접근/프록시 로그·브라우저 히스토리에 남아 유출 위험). 브라우저 표준 `EventSource`는 헤더를 못 실으므로 클라이언트는 `fetch` + `ReadableStream`으로 스트림을 읽으며 헤더를 설정한다(client-admin `useOrderStream` 참고).
 - 이벤트: `connected`(초기), `order.created`, `order.updated`, `order.deleted`, `session.closed`.
 - 25초 주기 하트비트 주석(`: ping`), 클라이언트 재연결 힌트 `retry: 3000`.
 - payload: order.* 는 주문 DTO(또는 삭제 시 `{id, table_id, session_id}`), session.closed 는 `{tableId, sessionId, movedOrders}`.

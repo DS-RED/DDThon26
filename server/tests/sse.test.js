@@ -9,8 +9,9 @@ function mockReq(storeId, token) {
   const handlers = {};
   return {
     params: { storeId: String(storeId) },
-    get: () => '',
-    query: { token },
+    // 인증은 Authorization: Bearer 헤더로만 (쿼리 토큰 미지원).
+    get: (name) => (name && name.toLowerCase() === 'authorization' && token ? `Bearer ${token}` : ''),
+    query: {},
     on: (event, cb) => {
       handlers[event] = cb;
     },

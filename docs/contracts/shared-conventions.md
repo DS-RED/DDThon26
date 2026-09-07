@@ -40,7 +40,7 @@
 | `server/src/config`, `middleware`, `utils`, `app.js`, `server.js` | P2 초안 → 공동 |
 
 ## 5. SSE 이벤트 (P1 소유 — 구현됨)
-- 엔드포인트: `GET /api/stores/:storeId/events?token=<jwt>` (text/event-stream, admin).
+- 엔드포인트: `GET /api/stores/:storeId/events` (text/event-stream, admin).
 - 이벤트 타입: `connected`, `order.created`, `order.updated`, `order.deleted`, `session.closed`.
-- EventSource 제약상 `?token=` 쿼리 또는 `Authorization: Bearer` 허용. 25초 하트비트.
+- **인증: `Authorization: Bearer <jwt>` 헤더만.** 쿼리 토큰(`?token=`)은 로그 유출 위험으로 사용하지 않음. 클라이언트는 `fetch` 기반 SSE 리더로 헤더 전송. 25초 하트비트.
 - 상세 payload 스키마: [api-auth-orders-sessions.md](./api-auth-orders-sessions.md) 참고.

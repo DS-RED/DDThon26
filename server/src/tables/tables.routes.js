@@ -13,7 +13,8 @@ router.get('/tables', requireAdmin, controller.listTables);
 router.post('/tables', requireAdmin, validateBody(createTableSchema), controller.createTable);
 router.post('/tables/:tableId/close', requireAdmin, controller.closeSession);
 
-// SSE stream (auth handled inside the handler — EventSource can't set headers)
+// SSE stream. Auth (Authorization: Bearer, admin + store scope) is handled inside
+// the handler so it can emit an SSE-style stream/error response rather than JSON.
 router.get('/events', eventsHandler);
 
 export default router;
