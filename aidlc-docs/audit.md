@@ -147,3 +147,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: CONSTRUCTION / 보안 후속 수정 — JWT를 쿼리스트링에서 제거(로그 유출 방지), 헤더 전용 인증으로 통일
 
 ---
+
+## Construction - P2 .env 로딩 + 통합 스크립트 + 루트 README (백로그 4)
+**Timestamp**: 2026-09-07T06:30:00Z
+**User Input**: "4번 진행하고 테스트 후 다른 P 모듈에 영향 없으면 풀/커밋/푸시 진행해."
+**AI Response**: (1) dotenv 추가 + server/src/env.js(서버 루트 .env 로드, NODE_ENV=test면 skip) → server.js/migrate.js/seed.js 최상단 import(config 평가 전). (2) 루트 package.json(server 위임 스크립트: setup/migrate/seed/server/server:dev/test), 루트 .gitignore. (3) 루트 README.md(슬라이스 구성/빠른시작/env/데모계정/계약문서 링크). .env.example·server/README 문구 갱신. 검증: npm test 41/41, .env 로드 스모크(PORT/CORS 반영, test에서 무시 확인), 루트 npm run migrate/test 위임 확인. 영향평가: 서버 진입점 한정 + 테스트 가드 + 신규 스캐폴딩만 → P1/P3/P4 소유 코드 무수정, 무영향. 풀/커밋/푸시 진행.
+**Context**: CONSTRUCTION - P2 공통 인프라 (env/실행 스크립트/문서)

@@ -36,7 +36,10 @@ npm test             # in-memory SQLite 로 실행 (DB_PATH=:memory:)
 - 테이블: storeCode `demo-001`, tableNumber `1`~`3`, password `0000`
 
 ## 환경 변수
-`.env.example` 참고.
+`server/.env` 를 시작 시 자동 로드한다(`dotenv`). 셸/CI 환경 변수가 우선하며, 테스트(`NODE_ENV=test`)에서는 무시된다. `.env.example` 을 복사해 사용:
+```bash
+cp .env.example .env
+```
 | 변수 | 기본값 | 설명 |
 |------|--------|------|
 | PORT | 3000 | 서버 포트 |

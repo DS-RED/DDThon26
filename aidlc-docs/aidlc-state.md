@@ -59,6 +59,11 @@
   - [x] p4-admin-frontend (2026-09-07, client-admin/ — 로그인·실시간 모니터링(SSE)·테이블/주문/메뉴 관리, vite build 성공 + 백엔드 연동 스모크 통과)
 - [x] Build and Test (Node 24.19.0, server `npm test` 41/41 통과; client-admin `vite build` 성공, end-to-end 스모크 통과)
 - [x] P2 공통 인프라 보강: CORS 활성화 (P3/P4 SPA 크로스 오리진 지원, 2026-09-07)
+- [x] P2 고객용 메뉴 `?available=true` 필터 (2026-09-07)
+- [x] P2 문서 싱크: api-menu-store.md 관리자 JWT 인증 반영 (2026-09-07)
+- [x] P2 보안: 메뉴/분류 store-scope 가드 (교차 매장 403, 2026-09-07)
+- [x] P2 카테고리 reorder 엔드포인트 (2026-09-07)
+- [x] P2 공통 인프라: .env 로딩(dotenv) + 루트 통합 스크립트 + 루트 README (2026-09-07)
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations (Placeholder)

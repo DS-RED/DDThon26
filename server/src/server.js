@@ -1,3 +1,4 @@
+import './env.js'; // must run before config is imported
 import { createApp } from './app.js';
 import { config } from './config/index.js';
 import { getDb, closeDb } from './db/connection.js';

@@ -1,3 +1,4 @@
+import '../env.js'; // must run before connection.js reads config (DB_PATH)
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

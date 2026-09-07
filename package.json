@@ -1,0 +1,17 @@
+{
+  "name": "table-order",
+  "version": "0.1.0",
+  "description": "테이블오더 서비스 (React SPA + Node.js + SQLite + SSE) — 4인 협업 모노레포",
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix server install && npm run migrate && npm run seed",
+    "migrate": "npm --prefix server run migrate",
+    "seed": "npm --prefix server run seed",
+    "server": "npm --prefix server start",
+    "server:dev": "npm --prefix server run dev",
+    "test": "npm --prefix server test",
+    "admin:install": "npm --prefix client-admin install",
+    "admin:dev": "npm --prefix client-admin run dev",
+    "admin:build": "npm --prefix client-admin run build"
+  }
+}
