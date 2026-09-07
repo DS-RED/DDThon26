@@ -4,7 +4,9 @@
 - **Project Type**: Greenfield
 - **Project Name**: 테이블오더 서비스 (Table Order Service)
 - **Start Date**: 2026-09-07T02:41:38Z
-- **Current Stage**: INCEPTION - Requirements Analysis (awaiting approval)
+- **Current Stage**: CONSTRUCTION (scoped) - P2 code generation COMPLETE (pending env verify: npm install/test)
+- **My Role (this developer)**: P2 — 백엔드 · 메뉴/매장 도메인 + 데이터·공통 인프라
+- **Build Scope**: P2 slice only (menu/store CRUD, SQLite schema+migration+seed, common middleware, server bootstrap). P1/P3/P4 owned by teammates.
 
 ## Technology Decisions (from Requirements Analysis)
 - **Frontend**: React SPA (Vite + React)
@@ -44,15 +46,15 @@
 ### 🔵 INCEPTION PHASE
 - [x] Workspace Detection
 - [ ] Reverse Engineering (N/A - Greenfield)
-- [x] Requirements Analysis (awaiting user approval)
+- [x] Requirements Analysis (APPROVED 2026-09-07)
 - [ ] User Stories
 - [ ] Workflow Planning
 - [ ] Application Design
 - [ ] Units Generation
 
 ### 🟢 CONSTRUCTION PHASE
-- [ ] Per-Unit Design & Code Generation
-- [ ] Build and Test
+- [x] Per-Unit Design & Code Generation (p2-backend-menu-store, 2026-09-07)
+- [ ] Build and Test (⚠️ blocked locally: Node.js/npm not installed on this machine — run `cd server && npm install && npm test` on a Node env)
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations (Placeholder)

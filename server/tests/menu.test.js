@@ -1,0 +1,122 @@
+import { test, before, after, describe } from 'node:test';
+import assert from 'node:assert/strict';
+import request from 'supertest';
+import { bootstrap } from './helpers.js';
+
+let app;
+let storeId;
+let close;
+
+before(async () => {
+  const ctx = await bootstrap();
+  app = ctx.app;
+  storeId = ctx.seed.storeId;
+  close = ctx.closeDb;
+});
+
+after(() => close && close());
+
+const base = () => `/api/stores/${storeId}`;
+
+describe('menu routes', () => {
+  test('GET /menu returns grouped categories from seed', async () => {
+    const res = await request(app).get(`${base()}/menu`);
+    assert.equal(res.status, 200);
+    assert.ok(Array.isArray(res.body));
+    assert.ok(res.body.length >= 3);
+    const coffee = res.body.find((g) => g.category && g.category.name === '커피');
+    assert.ok(coffee);
+    assert.ok(coffee.items.length >= 1);
+    // is_available serialized as boolean
+    assert.equal(typeof coffee.items[0].is_available, 'boolean');
+  });
+
+  test('GET /categories lists seeded categories', async () => {
+    const res = await request(app).get(`${base()}/categories`);
+    assert.equal(res.status, 200);
+    assert.equal(res.body.length, 3);
+  });
+
+  test('full CRUD lifecycle for a menu item', async () => {
+    // Create
+    const created = await request(app)
+      .post(`${base()}/menu`)
+      .send({ name: '테스트 음료', price: 3000, image_url: 'https://example.com/a.jpg' });
+    assert.equal(created.status, 201);
+    assert.equal(created.body.name, '테스트 음료');
+    assert.equal(created.body.is_available, true);
+    const id = created.body.id;
+
+    // Read
+    const read = await request(app).get(`${base()}/menu/${id}`);
+    assert.equal(read.status, 200);
+    assert.equal(read.body.price, 3000);
+
+    // Update
+    const updated = await request(app)
+      .put(`${base()}/menu/${id}`)
+      .send({ price: 3500, is_available: false });
+    assert.equal(updated.status, 200);
+    assert.equal(updated.body.price, 3500);
+    assert.equal(updated.body.is_available, false);
+
+    // Delete
+    const deleted = await request(app).delete(`${base()}/menu/${id}`);
+    assert.equal(deleted.status, 204);
+
+    const gone = await request(app).get(`${base()}/menu/${id}`);
+    assert.equal(gone.status, 404);
+  });
+
+  test('POST /menu rejects invalid body (validation)', async () => {
+    const res = await request(app).post(`${base()}/menu`).send({ name: '', price: -1 });
+    assert.equal(res.status, 400);
+    assert.ok(res.body.error.details);
+  });
+
+  test('PATCH /menu/reorder updates display order', async () => {
+    const list = await request(app).get(`${base()}/menu`);
+    const items = list.body.flatMap((g) => g.items);
+    assert.ok(items.length >= 2);
+    const payload = {
+      items: [
+        { id: items[0].id, display_order: 50 },
+        { id: items[1].id, display_order: 10 },
+      ],
+    };
+    const res = await request(app).patch(`${base()}/menu/reorder`).send(payload);
+    assert.equal(res.status, 200);
+    const map = new Map(res.body.map((it) => [it.id, it.display_order]));
+    assert.equal(map.get(items[0].id), 50);
+    assert.equal(map.get(items[1].id), 10);
+  });
+
+  test('reorder rejects unknown item id', async () => {
+    const res = await request(app)
+      .patch(`${base()}/menu/reorder`)
+      .send({ items: [{ id: 999999, display_order: 1 }] });
+    assert.equal(res.status, 400);
+  });
+
+  test('category CRUD lifecycle', async () => {
+    const created = await request(app).post(`${base()}/categories`).send({ name: '신규분류' });
+    assert.equal(created.status, 201);
+    const id = created.body.id;
+
+    const updated = await request(app)
+      .put(`${base()}/categories/${id}`)
+      .send({ name: '수정분류', display_order: 9 });
+    assert.equal(updated.status, 200);
+    assert.equal(updated.body.name, '수정분류');
+
+    const deleted = await request(app).delete(`${base()}/categories/${id}`);
+    assert.equal(deleted.status, 204);
+  });
+
+  test('creating menu item with foreign category id is rejected', async () => {
+    const res = await request(app)
+      .post(`${base()}/menu`)
+      .send({ name: 'X', price: 1000, category_id: 999999 });
+    assert.equal(res.status, 400);
+  });
+});
