@@ -2,6 +2,8 @@
 
 > 이 문서는 4인 협업(P1~P4)이 동일한 계약(contract) 위에서 병렬 개발하기 위한 초안입니다.
 > P2가 초안을 작성했으며, 각 도메인 담당자가 리뷰 후 확정합니다.
+>
+> 📌 **교차팀 계약 불일치·블로커는 [open-issues.md](./open-issues.md)에서 추적합니다.** 다른 담당의 작업에 영향 주는 문제를 발견하면 여기에 append 하세요.
 
 ## 1. 공통 원칙
 - **백엔드**: Node.js + Express, ESM(`"type": "module"`), better-sqlite3, zod 검증.

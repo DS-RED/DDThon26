@@ -194,3 +194,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **AI Response**: P3 기본 앱과 관련 문서만 선별하여 작업 브랜치에 커밋/푸시 진행. P1/P2/P4 소스 변경 없음. 기존 미추적 계약 문서 및 편집기 swap 파일은 제외.
 **Verification**: npm ci/build 및 Vitest 25/25 통과. Playwright 5개 시나리오는 libnspr4.so 누락으로 브라우저 시작에 실패해 미검증.
 **Open Work**: P1 세션 식별 계약과 카트 종료 초기화, 실제 브라우저/시각 검증. Step 8/9 및 전체 인수는 미완료로 유지.
+
+## Construction - 교차팀 이슈 트래커 신설 + 인증 불일치 등록
+**Timestamp**: 2026-09-07T07:05:00Z
+**User Input**: "해당 이슈가 공유 문서 내 이슈 관리하는 곳에 있어? 없으면 추가해서 관련 작업자가 대응할 수 있도록 해줘"
+**AI Response**: 중앙 이슈 트래커 부재 확인(각 문서에 흩어진 열린 항목만 존재). docs/contracts/open-issues.md 신설(교차팀 계약 불일치/블로커 append 추적). ISSUE-001 등록: 테이블 로그인 계약 불일치(P1 실제 POST /api/auth/table/login + {token,table:{id,storeId,tableNumber}} vs P3 요청 POST /api/stores/:storeId/tables/login + {token,store_id,table_id}) — 경로·응답중첩·네이밍(camel vs snake) 3가지 차이, P3 배치 B 블로커, P1·P3 액션 명시(P1 계약 확정→P3 정렬, 권장:현행 유지). shared-conventions.md 상단에 트래커 링크 추가. P1 리뷰 후속/P3 열린항목은 원 문서 링크로 인덱싱(중복 방지). 커밋·푸시.
+**Context**: CONSTRUCTION - 공통 인프라(교차팀 이슈 관리 체계) + P1↔P3 계약 이슈 가시화
