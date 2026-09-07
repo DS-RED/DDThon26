@@ -2,13 +2,15 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getDb } from './connection.js';
 import { applySchema } from './migrate.js';
+import { hashPassword } from '../auth/password.js';
 
 const DEMO_STORE_CODE = 'demo-001';
 
-// Placeholder bcrypt hash for password "admin1234" (P1 replaces with real auth).
-// Generated with bcrypt cost 10 — kept as a static constant so seeding needs no
-// crypto dependency in the P2 slice.
-const ADMIN_PASSWORD_HASH = '$2b$10$X8s3Qk0m1nJ8mQm3n2m1eOa1Yl6Yk8Zk9Zk0Zk1Zk2Zk3Zk4Zk5K';
+// Demo credentials (P1 auth). Real bcrypt hashes are generated at seed time.
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'admin1234';
+const TABLE_PASSWORD = '0000';
+const DEMO_TABLE_NUMBERS = ['1', '2', '3'];
 
 /**
  * Seeds demo data (idempotent — no-op if the demo store already exists).
@@ -51,12 +53,16 @@ export function seedDatabase(db = getDb()) {
       insertItem.run({ store_id: storeId, ...item });
     }
 
-    // Contract-only tables (P1 owns logic) — seed minimal rows so slices can integrate.
+    // Auth-related seed rows (P1). Passwords hashed with bcrypt at seed time.
     db.prepare(
       'INSERT INTO admin_users (store_id, username, password_hash) VALUES (?, ?, ?)',
-    ).run(storeId, 'admin', ADMIN_PASSWORD_HASH);
+    ).run(storeId, ADMIN_USERNAME, hashPassword(ADMIN_PASSWORD));
 
-    db.prepare('INSERT INTO tables (store_id, table_number) VALUES (?, ?)').run(storeId, '1');
+    const tablePasswordHash = hashPassword(TABLE_PASSWORD);
+    const insertTable = db.prepare('INSERT INTO tables (store_id, table_number, password_hash) VALUES (?, ?, ?)');
+    for (const number of DEMO_TABLE_NUMBERS) {
+      insertTable.run(storeId, number, tablePasswordHash);
+    }
 
     return storeId;
   });

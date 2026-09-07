@@ -4,7 +4,7 @@
 - **Project Type**: Greenfield
 - **Project Name**: 테이블오더 서비스 (Table Order Service)
 - **Start Date**: 2026-09-07T02:41:38Z
-- **Current Stage**: CONSTRUCTION (scoped) - P2 code generation COMPLETE (pending env verify: npm install/test)
+- **Current Stage**: CONSTRUCTION - P2 COMPLETE + P1 (temp) COMPLETE & verified (35/35 tests pass)
 - **My Role (this developer)**: P2 — 백엔드 · 메뉴/매장 도메인 + 데이터·공통 인프라
 - **Build Scope**: P2 slice only (menu/store CRUD, SQLite schema+migration+seed, common middleware, server bootstrap). P1/P3/P4 owned by teammates.
 
@@ -53,8 +53,10 @@
 - [ ] Units Generation
 
 ### 🟢 CONSTRUCTION PHASE
-- [x] Per-Unit Design & Code Generation (p2-backend-menu-store, 2026-09-07)
-- [ ] Build and Test (⚠️ blocked locally: Node.js/npm not installed on this machine — run `cd server && npm install && npm test` on a Node env)
+- [x] Per-Unit Design & Code Generation
+  - [x] p2-backend-menu-store (2026-09-07)
+  - [x] p1-backend-orders-sessions (2026-09-07, TEMP — P1 담당자 합류 전 P2가 임시 구축, 리뷰/이관 대상)
+- [x] Build and Test (Node 24.19.0 설치 완료, `npm test` 35/35 통과, end-to-end 스모크 통과)
 
 ### 🟡 OPERATIONS PHASE
 - [ ] Operations (Placeholder)

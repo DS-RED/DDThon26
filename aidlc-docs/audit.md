@@ -83,3 +83,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "크게 문제 없으면 커밋까지 진행해줘."
 **AI Response**: p2-backend-menu-store Part 2(코드 생성) 12단계 전부 완료. 생성물: server/ 골격(package.json/config/db connection·schema·migrate·seed), 미들웨어(error-handler/validate/logger/auth placeholder), utils/http-error, store 레이어, menu 레이어(zod schema/repository/service/controller/routes), app.js/server.js, tests(store/menu + helpers, in-memory SQLite), 공유 계약 문서(docs/contracts/db-schema·api-menu-store·shared-conventions), server/README.md, code/summary.md. 정적 리뷰 중 update 스키마의 .default() 재설정 버그 발견 → 수정(부분 수정 시 누락 필드 보존). ⚠️ 이 머신에 Node.js/npm 미설치로 `npm install`/`npm test` 자동 실행 불가 — 담당 환경에서 검증 필요. 계획 체크박스 전부 [x], aidlc-state.md 갱신. 사용자 요청대로 커밋 진행.
 **Context**: CONSTRUCTION - Code Generation Part 2 완료 → 커밋
+
+## Construction - P1 (temp) Code Generation Complete
+**Timestamp**: 2026-09-07T05:05:00Z
+**User Input**: "지금 P1 파트 담당이 늦게 오고있어서 일단 작업을 진행해야 할 것 같은데 임시로 P1 작업 진행해줘. 타이밍 상 아무 작업 안되었을 시점이라 지금 이쪽해서 해도 문제 없을꺼야." / (mid-turn) "검증 후 커밋, 푸시까지 진행해줘"
+**AI Response**: P1 담당자 합류 지연으로 P2가 임시로 P1 슬라이스(unit p1-backend-orders-sessions) 구현. 범위: 인증(JWT jsonwebtoken + bcryptjs, 관리자/테이블 로그인, 로그인 시도 제한), 실제 requireAdmin/requireTable 미들웨어(P2 placeholder 대체), 세션 라이프사이클(자동 시작~종료→order_history 이동), 주문 CRUD(가격 스냅샷·총액·상태변경·직권삭제), 주문 이력 조회, 테이블 초기설정·대시보드 요약, SSE 발행(order.created/updated/deleted, session.closed)+/events 구독. seed.js를 실제 bcrypt 해시로 갱신(admin admin1234, table 0000, 테이블 3개). menu.test.js를 관리자 토큰 인증으로 갱신. auth/orders/sse 테스트 추가. Node 24.19.0 설치 후 npm test 35/35 통과, 로컬 end-to-end 스모크(로그인→주문→SSE 실시간 수신→세션종료→이력) 통과. 계약 문서(api-auth-orders-sessions.md) 및 shared-conventions/README 갱신. 커밋·푸시 진행. 임시 구현이며 P1 담당자 합류 후 리뷰/이관 대상임을 문서에 명시.
+**Context**: CONSTRUCTION - Code Generation (unit = p1-backend-orders-sessions, TEMP)

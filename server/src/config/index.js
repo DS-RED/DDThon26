@@ -12,6 +12,17 @@ export const config = {
   // DB_PATH may be an absolute/relative file path or the special value ':memory:'
   dbPath: process.env.DB_PATH && process.env.DB_PATH.trim() !== '' ? process.env.DB_PATH : defaultDbPath,
   serverRoot,
+
+  // --- Auth (P1) ---
+  // JWT signing secret. A dev fallback is used when unset; MUST be set in real deployments.
+  jwtSecret: process.env.JWT_SECRET && process.env.JWT_SECRET.trim() !== ''
+    ? process.env.JWT_SECRET
+    : 'dev-only-insecure-secret-change-me',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '16h', // FR-A1: 16-hour admin session
+  bcryptRounds: Number(process.env.BCRYPT_ROUNDS) || 10,
+  // Login attempt limiting (FR-A1): lock after N fails within the window.
+  loginMaxAttempts: Number(process.env.LOGIN_MAX_ATTEMPTS) || 5,
+  loginWindowMs: Number(process.env.LOGIN_WINDOW_MS) || 15 * 60 * 1000,
 };
 
 export const isTest = () => config.nodeEnv === 'test';

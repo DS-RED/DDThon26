@@ -22,11 +22,13 @@
 | 409 | 충돌 |
 | 500 | 서버 내부 오류 |
 
-## 3. 인증 (P1 소유)
-- 관리자 전용 엔드포인트(메뉴/분류/매장/주문 관리)는 `Authorization: Bearer <JWT>` 필요.
-- P2 슬라이스는 `requireAdmin` **placeholder**(통과 스텁)를 사용 중.
-  - `server/src/middleware/auth.js` — P1이 실제 JWT 검증으로 교체(`TODO(P1)`).
-- 인증 성공 시 `req.admin = { id, storeId }` 를 채운다(합의).
+## 3. 인증 (P1 소유 — 구현됨)
+- 관리자 전용 엔드포인트(메뉴/분류/매장/주문/테이블 관리)는 `Authorization: Bearer <JWT>` 필요.
+- `server/src/middleware/auth.js` 의 `requireAdmin`/`requireTable` 이 **실제 JWT 검증**을 수행(placeholder 대체 완료).
+  - 성공 시 `req.admin = { id, storeId, username }` 또는 `req.table = { id, storeId, tableNumber }`.
+- 로그인: `POST /api/auth/admin/login`, `POST /api/auth/table/login` → JWT 발급(16h).
+- 비밀번호는 bcrypt(bcryptjs) 해시, `JWT_SECRET` 로 서명. 상세는 [api-auth-orders-sessions.md](./api-auth-orders-sessions.md).
+- ⚠️ 임시 메모: P1 담당자 합류 전 P2가 임시 구현. 합류 후 리뷰/이관.
 
 ## 4. 폴더 소유권
 | 경로 | 담당 |
@@ -37,7 +39,8 @@
 | `client-admin/` | P4 |
 | `server/src/config`, `middleware`, `utils`, `app.js`, `server.js` | P2 초안 → 공동 |
 
-## 5. SSE 이벤트 (P1 소유, 참고용 플레이스홀더)
-- 엔드포인트(안): `GET /api/stores/:storeId/events` (text/event-stream).
-- 이벤트 타입(안): `order.created`, `order.updated`, `session.updated`.
-- 상세 스키마는 P1이 `docs/contracts/sse-events.md`로 확정.
+## 5. SSE 이벤트 (P1 소유 — 구현됨)
+- 엔드포인트: `GET /api/stores/:storeId/events?token=<jwt>` (text/event-stream, admin).
+- 이벤트 타입: `connected`, `order.created`, `order.updated`, `order.deleted`, `session.closed`.
+- EventSource 제약상 `?token=` 쿼리 또는 `Authorization: Bearer` 허용. 25초 하트비트.
+- 상세 payload 스키마: [api-auth-orders-sessions.md](./api-auth-orders-sessions.md) 참고.

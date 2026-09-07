@@ -1,7 +1,7 @@
 {
   "name": "table-order-server",
   "version": "0.1.0",
-  "description": "Table Order Service - P2 backend (menu/store domain + data & common infrastructure)",
+  "description": "Table Order Service - backend (P2 menu/store + data/infra; P1 auth/orders/sessions/SSE)",
   "type": "module",
   "main": "src/server.js",
   "engines": {
@@ -15,8 +15,10 @@
     "test": "node --test"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "better-sqlite3": "^11.3.0",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
