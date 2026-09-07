@@ -200,3 +200,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "해당 이슈가 공유 문서 내 이슈 관리하는 곳에 있어? 없으면 추가해서 관련 작업자가 대응할 수 있도록 해줘"
 **AI Response**: 중앙 이슈 트래커 부재 확인(각 문서에 흩어진 열린 항목만 존재). docs/contracts/open-issues.md 신설(교차팀 계약 불일치/블로커 append 추적). ISSUE-001 등록: 테이블 로그인 계약 불일치(P1 실제 POST /api/auth/table/login + {token,table:{id,storeId,tableNumber}} vs P3 요청 POST /api/stores/:storeId/tables/login + {token,store_id,table_id}) — 경로·응답중첩·네이밍(camel vs snake) 3가지 차이, P3 배치 B 블로커, P1·P3 액션 명시(P1 계약 확정→P3 정렬, 권장:현행 유지). shared-conventions.md 상단에 트래커 링크 추가. P1 리뷰 후속/P3 열린항목은 원 문서 링크로 인덱싱(중복 방지). 커밋·푸시.
 **Context**: CONSTRUCTION - 공통 인프라(교차팀 이슈 관리 체계) + P1↔P3 계약 이슈 가시화
+
+## Construction - 백엔드 교차 슬라이스 통합 테스트 + 증적
+**Timestamp**: 2026-09-07T07:20:00Z
+**User Input**: "이후 통합 테스트 진행하자. 테스트 후 증적 올리고"
+**AI Response**: server/tests/integration.test.js 신설 — 실제 HTTP 서버(http.createServer(app).listen(0))를 띄우고 관리자 대시보드가 SSE를 소켓으로 실시간 수신하는 P1+P2 end-to-end 검증. 기존 sse.test.js는 mock req/res였으나 이번엔 라이브 연결. 흐름: 테이블 로그인(P1)→메뉴 available=true(P2)→SSE 구독(P1)→주문 생성→order.created 라이브 수신+가격 스냅샷(P2 단가→P1 total) 검증→상태변경→order.updated→세션 종료→session.closed+이력 이동. 추가: SSE 테이블 토큰 401 거절, 교차 매장 403/404 가드. supertest 요청과 SSE 라이브 연결이 동일 app 모듈(동일 인메모리 DB·SSE 레지스트리) 공유해 publish 전달 확인. waitFor(2s 타임아웃)로 수신 확정, after 훅에서 _reset+서버/ DB close. node --test 44/44 통과(신규 3건 포함), Node v24.19.0. 증적: aidlc-docs/construction/build-and-test/backend-integration-evidence.md 신설(P3 Playwright 결과와 합산 안 함, 별도 문서 링크). 영향평가: 신규 테스트 파일만 추가, P1/P3/P4 소유 소스 무변경. 커밋·푸시.
+**Context**: CONSTRUCTION - Build and Test (백엔드 교차 슬라이스 통합 검증)
