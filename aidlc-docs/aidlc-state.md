@@ -55,8 +55,9 @@
 ### 🟢 CONSTRUCTION PHASE
 - [x] Per-Unit Design & Code Generation
   - [x] p2-backend-menu-store (2026-09-07)
-  - [x] p1-backend-orders-sessions (2026-09-07, TEMP — P1 담당자 합류 전 P2가 임시 구축, 리뷰/이관 대상)
-- [x] Build and Test (Node 24.19.0 설치 완료, `npm test` 36/36 통과, end-to-end 스모크 통과)
+  - [x] p1-backend-orders-sessions (2026-09-07, TEMP — P1 담당자 합류 전 P2가 임시 구축; P1 담당자 리뷰/이관 완료: aidlc-docs/construction/p1-backend-orders-sessions/p1-owner-review.md, 조건부 승인. SSE JWT를 헤더 전용으로 보안 수정)
+  - [x] p4-admin-frontend (2026-09-07, client-admin/ — 로그인·실시간 모니터링(SSE)·테이블/주문/메뉴 관리, vite build 성공 + 백엔드 연동 스모크 통과)
+- [x] Build and Test (Node 24.19.0, server `npm test` 41/41 통과; client-admin `vite build` 성공, end-to-end 스모크 통과)
 - [x] P2 공통 인프라 보강: CORS 활성화 (P3/P4 SPA 크로스 오리진 지원, 2026-09-07)
 
 ### 🟡 OPERATIONS PHASE

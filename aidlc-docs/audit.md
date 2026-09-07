@@ -119,3 +119,31 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "다 pull 되어있으면 3번 작업 진행해줘"
 **AI Response**: git pull --rebase 확인(Already up to date) 후 카테고리 reorder 추가. repo.reorderCategories(트랜잭션), service.reorderCategories(매장 소속 id 검증), controller.reorderCategories(assertStoreScope), 라우트 PATCH /categories/reorder를 /categories/:categoryId 앞에 등록(라우팅 gotcha). body는 기존 reorderSchema 재사용. 테스트 3건 추가(재정렬/미지 id 400/무토큰 401) → npm test 41/41 통과. api-menu-store.md 갱신. 커밋·푸시는 사용자 확인 대기.
 **Context**: CONSTRUCTION - P2 메뉴 도메인 기능 추가
+
+---
+
+## CONSTRUCTION - P1 Owner Review / Handover
+**Timestamp**: 2026-09-07T05:20:00Z
+**User Input**: "새로 git pull해봐. 다른 팀원이 p1했대" / "다시 pull해봐." / (선택) "팀원 P1 이관받아 리뷰 (권장)"
+**AI Response**: "공유 레포(DS-RED/DDThon26) 재조회 결과, P2 담당자가 P1(인증/주문/세션/SSE)을 '임시(temp) — P1 담당자 리뷰/이관용'으로 구축해 push함(커밋 332f4b0). 작업 디렉토리를 origin/master로 동기화(기존 로컬 P1 초안은 /c/.../Temp/p1-local-ref에 백업). P1 소유자로서 코드 리뷰 수행 → aidlc-docs/construction/p1-backend-orders-sessions/p1-owner-review.md 작성. 판정: 조건부 승인. 로컬 디스크에서 node --test 35/35 통과 재현(SMB/UNC 공유에서는 better-sqlite3 네이티브 빌드 실패 = 환경 이슈, 코드 결함 아님). 주요 후속: (1) 관리자 엔드포인트 매장 스코프 검증 누락(cross-tenant), (2) 테이블 로그인 시도 제한 부재, (3) JWT 개발용 기본 시크릿."
+**Context**: CONSTRUCTION - P1 임시 구현 이관 및 소유자 리뷰 완료
+**Backup**: 로컬 P1 초안(node:sqlite 기반, 14/14) → C:\Users\DS RedTeam\AppData\Local\Temp\p1-local-ref
+
+---
+
+## CONSTRUCTION - P4 Admin Frontend (사용자 담당)
+**Timestamp**: 2026-09-07T05:30:00Z
+**User Input**: "나는 p4만들기로 했어. 너 지금하는거 끝난다음에 p4 만들어줘."
+**AI Response**: "P1 리뷰/이관 마무리 후 P4(관리자 프론트엔드)를 client-admin/에 신규 구축. Vite + React 18 + React Router 6 (외부 상태 라이브러리 없음, Context+hooks). 화면: 로그인, 실시간 모니터링 대시보드(SSE 구독 useOrderStream → 이벤트 수신 시 요약/상세 재조회), 테이블 관리(초기설정·세션종료·과거이력), 주문 관리(상태변경·직권삭제), 메뉴 관리(분류·메뉴 CRUD·판매중지 토글). API 계약은 docs/contracts/* 기준으로 연동(/api/auth/admin/login → admin.storeId 사용, /api/stores/:storeId/... , SSE ?token=). Vite dev 프록시로 백엔드(3000) 연결. 검증: 로컬 디스크에서 vite build 성공(46 modules), 백엔드 실행 후 로그인·/tables·/menu·SSE handshake·주문생성·/orders 응답 스키마가 프론트 기대와 일치 확인. 이전 로컬 P1 초안 잔여 파일(node:sqlite 기반, 채택 안 됨)은 제거(백업: Temp/p1-local-ref)."
+**Context**: CONSTRUCTION - P4 유닛 신규 구축 완료 + P1 잔여 파일 정리
+**Backup**: 로컬 P1 초안 → C:\Users\DS RedTeam\AppData\Local\Temp\p1-local-ref
+
+---
+
+## Construction — 보안 수정 (SSE JWT 헤더 전용)
+**Timestamp**: 2026-09-07T00:00:00Z
+**User Input**: "야 보안상 맞지 않지. post로 넘겨. 혹시 다른 p1,p2에서도 get으로 넘기고있으면 같이 바꿔주고"
+**AI Response**: "SSE(GET-only)는 실제 POST 전환이 불가하므로 사용자 의도(JWT를 URL에 싣지 않기)를 반영해 헤더 전용으로 수정. server/src/sse/sse.js에서 req.query.token 폴백 제거(Authorization: Bearer 헤더만 허용). client-admin/src/hooks/useOrderStream.js를 EventSource→fetch+ReadableStream으로 재작성(헤더 전송·SSE 프레임 직접 파싱·자동 재연결). tests/sse.test.js mockReq를 헤더 인증으로 갱신. 계약 문서(api-auth-orders-sessions.md, shared-conventions.md), client-admin/README.md, tables.routes.js 주석, p1-owner-review.md(후속항목 6=해결) 갱신. 전체 리포 grep 결과 다른 쿼리-토큰 사용처 없음(P1/P2 백엔드는 원래 Bearer 헤더만 사용). 검증: 백엔드 node --test 35/35 통과(로컬 디스크), client-admin vite build 성공."
+**Context**: CONSTRUCTION / 보안 후속 수정 — JWT를 쿼리스트링에서 제거(로그 유출 방지), 헤더 전용 인증으로 통일
+
+---
