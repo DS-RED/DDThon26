@@ -113,3 +113,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "보안 보안으로 처리해"
 **AI Response**: 앞서 식별한 교차 매장 권한 갭 수정. utils/http-error.js에 forbidden(403) 헬퍼 추가(P2 공통 인프라, additive). menu.controller.js에 assertStoreScope(req) 추가 — req.admin.storeId와 경로 :storeId 불일치 시 403(존재/검증 이전). 메뉴/분류의 모든 mutating 엔드포인트(create/update/delete/reorder)에 적용. GET(공개)은 미적용. menu.test.js에 교차 매장 403 테스트 추가 → npm test 38/38 통과. api-menu-store.md 문서를 실제 403 동작으로 갱신. 영향평가: 정상 요청(토큰 매장==경로 매장) 무영향, P3 공개 GET/P1 주문 무영향, 교차 매장 오용만 차단. 커밋·푸시.
 **Context**: CONSTRUCTION - P2 보안 보완 (store-scope authz)
+
+## Construction - P2 카테고리 reorder 엔드포인트 (백로그 3)
+**Timestamp**: 2026-09-07T06:12:00Z
+**User Input**: "다 pull 되어있으면 3번 작업 진행해줘"
+**AI Response**: git pull --rebase 확인(Already up to date) 후 카테고리 reorder 추가. repo.reorderCategories(트랜잭션), service.reorderCategories(매장 소속 id 검증), controller.reorderCategories(assertStoreScope), 라우트 PATCH /categories/reorder를 /categories/:categoryId 앞에 등록(라우팅 gotcha). body는 기존 reorderSchema 재사용. 테스트 3건 추가(재정렬/미지 id 400/무토큰 401) → npm test 41/41 통과. api-menu-store.md 갱신. 커밋·푸시는 사용자 확인 대기.
+**Context**: CONSTRUCTION - P2 메뉴 도메인 기능 추가

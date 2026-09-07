@@ -33,6 +33,15 @@ export function deleteCategory(storeId, categoryId) {
   }
 }
 
+export function reorderCategories(storeId, items) {
+  assertStoreExists(storeId);
+  const known = new Set(repo.listCategories(storeId).map((c) => c.id));
+  for (const { id } of items) {
+    if (!known.has(id)) throw badRequest(`Category ${id} not found in store ${storeId}`);
+  }
+  return repo.reorderCategories(storeId, items);
+}
+
 // ----- Menu items -----
 
 /**

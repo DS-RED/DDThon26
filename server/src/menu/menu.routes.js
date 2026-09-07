@@ -16,6 +16,11 @@ const router = Router({ mergeParams: true });
 // ----- Categories -----
 router.get('/categories', controller.listCategories);
 router.post('/categories', requireAdmin, validateBody(categoryCreateSchema), controller.createCategory);
+
+// NOTE: /categories/reorder MUST be registered before /categories/:categoryId so
+// "reorder" is not captured as a categoryId (same gotcha as /menu/reorder).
+router.patch('/categories/reorder', requireAdmin, validateBody(reorderSchema), controller.reorderCategories);
+
 router.put('/categories/:categoryId', requireAdmin, validateBody(categoryUpdateSchema), controller.updateCategory);
 router.delete('/categories/:categoryId', requireAdmin, controller.deleteCategory);
 

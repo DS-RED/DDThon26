@@ -32,10 +32,19 @@
 |--------|------|------|------|
 | GET | `/api/stores/:storeId/categories` | - | 분류 목록 |
 | POST | `/api/stores/:storeId/categories` | admin | 분류 생성 → 201 |
+| PATCH | `/api/stores/:storeId/categories/reorder` | admin | 표시 순서 일괄 변경(트랜잭션) |
 | PUT | `/api/stores/:storeId/categories/:categoryId` | admin | 수정 |
 | DELETE | `/api/stores/:storeId/categories/:categoryId` | admin | 삭제 → 204 |
 
+> ⚠️ 라우팅 주의: `/categories/reorder`는 반드시 `/categories/:categoryId` **앞에** 정의.
+
 **요청 본문 (생성)**: `{ "name": "커피", "display_order": 0 }`
+
+**PATCH /categories/reorder 본문**
+```json
+{ "items": [ { "id": 1, "display_order": 10 }, { "id": 2, "display_order": 20 } ] }
+```
+매장에 없는 id 포함 시 400. 응답은 갱신된 분류 목록(display_order 오름차순).
 
 ## 메뉴 (Menu items)
 | 메서드 | 경로 | 인증 | 설명 |

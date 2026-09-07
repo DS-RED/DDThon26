@@ -154,6 +154,36 @@ describe('menu routes', () => {
     assert.equal(deleted.status, 204);
   });
 
+  test('PATCH /categories/reorder updates category display order', async () => {
+    const list = await request(app).get(`${base()}/categories`);
+    assert.ok(list.body.length >= 2);
+    // Reorder every category so the resulting global order is deterministic:
+    // reverse the current order via descending display_order values.
+    const ids = list.body.map((c) => c.id);
+    const payload = { items: ids.map((id, i) => ({ id, display_order: (ids.length - i) * 10 })) };
+    const res = await auth(request(app).patch(`${base()}/categories/reorder`)).send(payload);
+    assert.equal(res.status, 200);
+    const map = new Map(res.body.map((c) => [c.id, c.display_order]));
+    assert.equal(map.get(ids[0]), ids.length * 10); // first got the highest order
+    assert.equal(map.get(ids[ids.length - 1]), 10); // last got the lowest
+    // response is ordered by display_order → original order reversed
+    assert.deepEqual(res.body.map((c) => c.id), [...ids].reverse());
+  });
+
+  test('category reorder rejects unknown id', async () => {
+    const res = await auth(request(app).patch(`${base()}/categories/reorder`)).send({
+      items: [{ id: 999999, display_order: 1 }],
+    });
+    assert.equal(res.status, 400);
+  });
+
+  test('category reorder requires admin token (401)', async () => {
+    const res = await request(app)
+      .patch(`${base()}/categories/reorder`)
+      .send({ items: [{ id: 1, display_order: 1 }] });
+    assert.equal(res.status, 401);
+  });
+
   test('creating menu item with foreign category id is rejected', async () => {
     const res = await auth(request(app).post(`${base()}/menu`)).send({
       name: 'X',

@@ -43,6 +43,18 @@ export function deleteCategory(storeId, categoryId, db = getDb()) {
   return info.changes > 0;
 }
 
+/** Applies new display_order values to categories in a single transaction. Returns updated list. */
+export function reorderCategories(storeId, items, db = getDb()) {
+  const update = db.prepare('UPDATE categories SET display_order = ? WHERE store_id = ? AND id = ?');
+  const tx = db.transaction((rows) => {
+    for (const { id, display_order } of rows) {
+      update.run(display_order, storeId, id);
+    }
+  });
+  tx(items);
+  return listCategories(storeId, db);
+}
+
 // ----- Menu items -----
 
 export function listMenuItems(storeId, db = getDb()) {

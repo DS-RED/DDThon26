@@ -114,3 +114,12 @@ export function deleteCategory(req, res, next) {
     next(err);
   }
 }
+
+export function reorderCategories(req, res, next) {
+  try {
+    assertStoreScope(req);
+    res.json(service.reorderCategories(storeId(req), req.validated.items));
+  } catch (err) {
+    next(err);
+  }
+}
