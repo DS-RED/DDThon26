@@ -35,16 +35,26 @@ export function deleteCategory(storeId, categoryId) {
 
 // ----- Menu items -----
 
-/** Returns menu items grouped by category (with an "uncategorized" bucket). */
-export function listMenu(storeId) {
+/**
+ * Returns menu items grouped by category (with an "uncategorized" bucket).
+ * @param {number} storeId
+ * @param {{ availableOnly?: boolean }} [opts] When availableOnly is true (customer
+ *   view), sold-out items are excluded and categories left empty are dropped.
+ */
+export function listMenu(storeId, opts = {}) {
   assertStoreExists(storeId);
+  const { availableOnly = false } = opts;
   const categories = repo.listCategories(storeId);
-  const items = repo.listMenuItems(storeId).map(toMenuItem);
+  let items = repo.listMenuItems(storeId).map(toMenuItem);
+  if (availableOnly) items = items.filter((it) => it.is_available);
 
-  const groups = categories.map((cat) => ({
-    category: cat,
-    items: items.filter((it) => it.category_id === cat.id),
-  }));
+  const groups = categories
+    .map((cat) => ({
+      category: cat,
+      items: items.filter((it) => it.category_id === cat.id),
+    }))
+    // In the customer view, hide categories that have no available items.
+    .filter((g) => !availableOnly || g.items.length > 0);
 
   const uncategorized = items.filter((it) => it.category_id == null);
   if (uncategorized.length > 0) {

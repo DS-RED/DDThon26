@@ -13,7 +13,9 @@ const storeId = (req) => parseId(req.params.storeId, 'storeId');
 
 export function listMenu(req, res, next) {
   try {
-    res.json(service.listMenu(storeId(req)));
+    // ?available=true → customer view: only in-stock items, empty categories hidden.
+    const availableOnly = String(req.query.available).toLowerCase() === 'true';
+    res.json(service.listMenu(storeId(req), { availableOnly }));
   } catch (err) {
     next(err);
   }

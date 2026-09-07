@@ -34,6 +34,23 @@ describe('menu routes', () => {
     assert.equal(typeof coffee.items[0].is_available, 'boolean');
   });
 
+  test('GET /menu?available=true hides sold-out items (customer view)', async () => {
+    const full = await request(app).get(`${base()}/menu`);
+    const fullItems = full.body.flatMap((g) => g.items);
+    // seed includes one unavailable item (초코 브라우니)
+    const soldOut = fullItems.find((it) => it.is_available === false);
+    assert.ok(soldOut, 'seed should contain at least one unavailable item');
+
+    const res = await request(app).get(`${base()}/menu`).query({ available: 'true' });
+    assert.equal(res.status, 200);
+    const items = res.body.flatMap((g) => g.items);
+    assert.ok(items.length >= 1);
+    assert.ok(items.every((it) => it.is_available === true));
+    assert.ok(!items.some((it) => it.id === soldOut.id));
+    // no empty category groups in the customer view
+    assert.ok(res.body.every((g) => g.items.length > 0));
+  });
+
   test('GET /categories lists seeded categories', async () => {
     const res = await request(app).get(`${base()}/categories`);
     assert.equal(res.status, 200);

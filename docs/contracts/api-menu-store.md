@@ -33,7 +33,7 @@
 ## 메뉴 (Menu items)
 | 메서드 | 경로 | 인증 | 설명 |
 |--------|------|------|------|
-| GET | `/api/stores/:storeId/menu` | - | 분류별 그룹 목록 |
+| GET | `/api/stores/:storeId/menu` | - | 분류별 그룹 목록. `?available=true`면 고객용 뷰(품절 메뉴 제외 + 빈 분류 숨김) |
 | POST | `/api/stores/:storeId/menu` | admin | 메뉴 생성 → 201 |
 | PATCH | `/api/stores/:storeId/menu/reorder` | admin | 표시 순서 일괄 변경(트랜잭션) |
 | GET | `/api/stores/:storeId/menu/:itemId` | - | 메뉴 단건 |
@@ -54,6 +54,8 @@
 ]
 ```
 `is_available`은 항상 **boolean**으로 직렬화된다(DB는 0/1).
+
+`?available=true`(고객 메뉴 화면용): `is_available === false`인 메뉴는 제외되고, 해당 분류에 노출 가능한 메뉴가 하나도 없으면 그 분류 그룹도 응답에서 빠진다. 관리자 화면은 파라미터 없이 호출해 품절 메뉴까지 모두 받는다.
 
 **메뉴 생성/수정 본문**
 ```json

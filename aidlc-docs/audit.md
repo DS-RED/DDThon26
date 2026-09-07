@@ -95,3 +95,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "다시 P2로 돌아가서 뭐 진행하면 좋을지 정리해줘" → (AskUserQuestion 응답) "CORS 활성화 (1순위)"
 **AI Response**: P2 남은 작업 정리 후 사용자가 CORS 활성화 선택. cors 미들웨어 추가(app.js), config.corsOrigins(CORS_ORIGINS env, 기본 '*'), .env.example/README 문서화, store.test.js에 CORS 단순요청+프리플라이트 테스트 추가. SSE 응답 헤더와 충돌 없음 확인. npm test 36/36 통과. 커밋·푸시.
 **Context**: CONSTRUCTION - P2 common infra 보강 (CORS)
+
+## Construction - P2 고객용 메뉴 available 필터
+**Timestamp**: 2026-09-07T05:35:00Z
+**User Input**: "1번 진행 해. 커밋 푸시는 하지 말고"
+**AI Response**: GET /menu에 `?available=true` 쿼리 지원 추가. menu.service.listMenu(storeId,{availableOnly})가 is_available=false 메뉴 제외 + 빈 분류 그룹 숨김(고객 화면용). 관리자 화면은 파라미터 없이 전체 조회. controller에서 req.query.available 파싱. menu.test.js에 품절 메뉴 제외 테스트 추가 → npm test 37/37 통과. api-menu-store.md 계약 문서 갱신. 사용자 요청대로 커밋·푸시는 하지 않음.
+**Context**: CONSTRUCTION - P2 고객 메뉴 도메인 보강
