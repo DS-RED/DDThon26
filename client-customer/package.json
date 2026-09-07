@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22.12.0" },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
@@ -11,15 +13,22 @@
     "test": "vitest run",
     "test:e2e": "playwright test"
   },
-  "dependencies": { "react": "^19.0.0", "react-dom": "^19.0.0", "react-router-dom": "^7.0.0" },
+  "dependencies": {
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.0.0",
+    "three": "^0.171.0"
+  },
   "devDependencies": {
-    "@vitejs/plugin-react": "^5.0.0",
-    "vite": "^7.0.0",
-    "vitest": "^4.0.0",
-    "jsdom": "^27.0.0",
-    "@testing-library/react": "^16.0.0",
+    "@playwright/test": "^1.58.0",
     "@testing-library/jest-dom": "^6.0.0",
+    "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.0.0",
-    "@playwright/test": "^1.58.0"
+    "@vitejs/plugin-react": "^5.0.0",
+    "jsdom": "^27.0.0",
+    "vite": "^7.0.0",
+    "vitest": "^4.0.0"
   }
 }
