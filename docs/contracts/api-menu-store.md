@@ -7,9 +7,9 @@
 아래 표에서 **admin** 으로 표시된 엔드포인트는 `Authorization: Bearer <JWT>` 헤더가 필요하다.
 - 토큰은 `POST /api/auth/admin/login` 으로 발급받는다(상세: [api-auth-orders-sessions.md](./api-auth-orders-sessions.md)).
 - `server/src/middleware/auth.js` 의 `requireAdmin` 이 **실제 JWT 검증**을 수행한다(과거 P2 placeholder는 P1 구현으로 대체 완료). 성공 시 `req.admin = { id, storeId, username }`.
+- 토큰의 `storeId` 와 경로의 `:storeId` 는 일치해야 한다. 불일치 시 **403** `Token store does not match requested store`(store-scope 가드, 존재/검증 이전에 확인).
 - 헤더 누락/형식 오류/만료 → **401**.
 - 표에서 인증이 `-` 인 조회 엔드포인트(매장/분류/메뉴 GET)는 토큰 없이 호출 가능(고객 화면용).
-- ⚠️ **알려진 갭**: 현재 메뉴/분류 관리 엔드포인트는 토큰의 `storeId` 와 경로 `:storeId` 의 일치를 **강제하지 않는다**. 즉 매장 A 관리자 토큰으로 매장 B 메뉴를 변경할 수 있다(주문 도메인은 `assertStoreScope` 로 이미 방지). 단일 매장 데모에서는 무해하나, 다중 매장 시 store-scope 검증 추가 필요. 추후 개선 항목.
 
 ## Health
 | 메서드 | 경로 | 설명 |

@@ -62,6 +62,18 @@ describe('menu routes', () => {
     assert.equal(res.status, 401);
   });
 
+  test('admin token cannot mutate another store (403 store scope)', async () => {
+    const otherStore = storeId + 99999; // not the token's store
+    const res = await auth(request(app).post(`/api/stores/${otherStore}/menu`)).send({
+      name: '침입',
+      price: 1000,
+    });
+    assert.equal(res.status, 403);
+    // scope is checked before existence/validation
+    const cat = await auth(request(app).post(`/api/stores/${otherStore}/categories`)).send({ name: 'x' });
+    assert.equal(cat.status, 403);
+  });
+
   test('full CRUD lifecycle for a menu item', async () => {
     // Create
     const created = await auth(request(app).post(`${base()}/menu`)).send({

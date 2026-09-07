@@ -107,3 +107,9 @@ AI-DLC 워크플로우를 시작해봅시다."
 **User Input**: "2번도 진행해. 다른 P 모듈에 영향이 있을지 평가하고 푸시하고"
 **AI Response**: 문서 전용 변경(코드 무변경 → 기능적 영향 없음). api-menu-store.md 헤더의 stale 문구 "(현재 P2 placeholder 통과)"를 실제 P1 JWT 구현에 맞게 갱신: 토큰 발급 경로, requireAdmin 실검증, 401 조건, 공개 GET 명시. 검증 중 메뉴/분류 관리 컨트롤러가 토큰 storeId와 경로 storeId 일치를 검증하지 않는 교차 매장 권한 갭 발견 → 없는 403 동작을 문서화하지 않고 "알려진 갭"으로 정직하게 명시(주문 도메인은 assertStoreScope로 방지됨). 사용자에게 코드 보완 여부 확인 예정.
 **Context**: CONSTRUCTION - P2 문서 싱크 + 보안 갭 식별
+
+## Construction - P2 메뉴/분류 store-scope 보안 보완
+**Timestamp**: 2026-09-07T05:58:00Z
+**User Input**: "보안 보안으로 처리해"
+**AI Response**: 앞서 식별한 교차 매장 권한 갭 수정. utils/http-error.js에 forbidden(403) 헬퍼 추가(P2 공통 인프라, additive). menu.controller.js에 assertStoreScope(req) 추가 — req.admin.storeId와 경로 :storeId 불일치 시 403(존재/검증 이전). 메뉴/분류의 모든 mutating 엔드포인트(create/update/delete/reorder)에 적용. GET(공개)은 미적용. menu.test.js에 교차 매장 403 테스트 추가 → npm test 38/38 통과. api-menu-store.md 문서를 실제 403 동작으로 갱신. 영향평가: 정상 요청(토큰 매장==경로 매장) 무영향, P3 공개 GET/P1 주문 무영향, 교차 매장 오용만 차단. 커밋·푸시.
+**Context**: CONSTRUCTION - P2 보안 보완 (store-scope authz)
