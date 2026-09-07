@@ -19,7 +19,7 @@ D) 서버 사이드 렌더링 프레임워크 (예: Next.js)
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Question 2
 백엔드 서버는 어떤 언어/프레임워크로 구현할까요?
@@ -34,7 +34,7 @@ D) Python (Django/DRF)
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ## Question 3
 데이터 저장소는 어떤 유형을 사용할까요? (매장/메뉴/주문/주문이력 저장)
@@ -49,7 +49,7 @@ D) NoSQL 문서형 (MongoDB)
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: C
 
 ## Question 4
 이 서비스의 실행/배포 대상 환경은 무엇인가요?
@@ -62,7 +62,7 @@ C) 클라우드 배포 (AWS 등)
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Question 5
 실시간 주문 모니터링은 요구사항에 명시된 **Server-Sent Events(SSE)** 방식으로 구현하는 것이 맞나요?
@@ -75,7 +75,7 @@ C) 아니요 — 클라이언트 폴링(주기적 요청)으로 구현 (가장 �
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Question 6
 메뉴 이미지는 어떻게 관리할까요? (제약사항: 이미지 리사이징/최적화, 파일 업로드는 제외)
@@ -88,7 +88,7 @@ C) 이미지 없이 텍스트/플레이스홀더만 사용
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Question 7
 초기 데이터(샘플 매장, 테이블, 메뉴, 관리자 계정)를 시드(seed) 데이터로 자동 생성해 바로 시연 가능하도록 할까요?
@@ -99,7 +99,7 @@ B) 아니요 — 빈 상태로 시작하고 관리자 화면에서 직접 입력
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Question 8
 예상 사용 규모(동시성)는 어느 정도로 설계할까요? (성능/확장성 설계 판단용)
@@ -112,7 +112,7 @@ C) 대규모 — 대규모 멀티테넌트, 고가용성 필요
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: A
 
 ## Question 9: 보안 확장 (Security Extensions)
 이 프로젝트에 보안 확장 규칙(Security Baseline)을 적용할까요?
@@ -123,7 +123,7 @@ B) 아니요 — 모든 SECURITY 규칙 생략 (PoC, 프로토타입, 실험적 
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ## Question 10: 복원력 확장 (Resiliency Extensions)
 이 프로젝트에 복원력 기준(Resiliency Baseline)을 적용할까요?
@@ -136,7 +136,7 @@ B) 아니요 — 복원력 기준 생략 (빠른 반복이 더 중요한 PoC/프
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: B
 
 ## Question 11: 속성 기반 테스트 확장 (Property-Based Testing Extension)
 이 프로젝트에 속성 기반 테스트(PBT) 규칙을 적용할까요?
@@ -149,4 +149,4 @@ C) 아니요 — 모든 PBT 규칙 생략 (단순 CRUD, UI 전용, 얇은 통합
 
 X) Other (please describe after [Answer]: tag below)
 
-[Answer]: 
+[Answer]: C

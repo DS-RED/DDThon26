@@ -30,3 +30,25 @@ AI-DLC 워크플로우를 시작해봅시다."
 **Context**: INCEPTION - Requirements Analysis (Step 2-6)
 
 ---
+
+## Requirements Analysis - User Answers Received
+**Timestamp**: 2026-09-07T02:41:38Z
+**User Input**: "답변했어. 이걸 기반으로 요구사항 정의서 작성 진행해줘.
+
+그리고 별도로 질문할게 있는데 이건 별도 문서로 만들어서 답변 진행해줘: \"4명에서 각각 AI 사용해서 작업할 예정인데, 개발 역할 영역 구분을 어떻게 하면 좋일지 알려줘.\""
+**Answers (requirement-verification-questions.md)**:
+- Q1 (Frontend): A — React (SPA, Vite + React)
+- Q2 (Backend): B — Node.js (Express or NestJS)
+- Q3 (Data store): C — SQLite (lightweight, local/demo)
+- Q4 (Deploy target): A — Local dev environment (single machine, demo)
+- Q5 (Realtime): A — Server-Sent Events (SSE)
+- Q6 (Menu images): A — External image URLs only
+- Q7 (Seed data): A — Yes, include sample store/menu/admin seed
+- Q8 (Scale): A — Small (single store, dozens of tables, MVP/demo)
+- Q9 (Security extension): B — No (skip Security Baseline)
+- Q10 (Resiliency extension): B — No (skip Resiliency Baseline)
+- Q11 (PBT extension): C — No (skip Property-Based Testing)
+**AI Response**: 답변 모순/모호성 검사 완료 — 일관된 소규모 MVP/데모 구성으로 확인. 확장 3종 모두 opt-out → aidlc-state.md Extension Configuration에 기록, 전체 규칙 파일 미로드. requirements.md 생성. 별도 요청(4인 AI 협업 역할 분담)은 aidlc-docs 외부 문서 docs/team-role-division.md로 작성.
+**Context**: INCEPTION - Requirements Analysis (Step 5.1-9)
+
+---
